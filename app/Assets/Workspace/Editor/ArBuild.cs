@@ -17,7 +17,7 @@ public static class ArBuild {
   EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android);
   PlayerSettings.companyName="ARWorkspace";PlayerSettings.productName="REALMAX Workspace";
   PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android,"com.ar.realmaxworkspace");
-  PlayerSettings.bundleVersion="0.1.0";PlayerSettings.Android.bundleVersionCode=1;
+  PlayerSettings.bundleVersion="0.1.1";PlayerSettings.Android.bundleVersionCode=2;
   PlayerSettings.Android.minSdkVersion=(AndroidSdkVersions)25;PlayerSettings.Android.targetSdkVersion=(AndroidSdkVersions)35;
   PlayerSettings.Android.targetArchitectures=AndroidArchitecture.ARMv7;
   PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Android,ScriptingImplementation.Mono2x);

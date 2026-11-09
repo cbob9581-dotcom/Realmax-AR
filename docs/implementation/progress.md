@@ -17,3 +17,5 @@ Final: request adapter/model/key captured before network yield; redirects disabl
 Final: browser visibility plus application pause controls Gecko active state; Home no longer opens hidden page keyboard. Reply page index clamps to last page.
 Final: Gecko MediaSession callbacks mute audio, removing app-initiated global volume writes. Unity AudioListener remains zero.
 Deferred: physical optics/input orientation and live cloud API success remain device/user validations; source review cannot establish them.
+
+Device RED: first installed build SIGABRT in libsvrplugin SvrCanBeginVR. Tombstone proves legacy JNI expects Activity.mUnityPlayer descriptor Lcom/unity3d/player/UnityPlayer; plus UnityPlayer.getChildAt(int). Unity6 Activity uses UnityPlayerForActivityOrService and player no longer extends FrameLayout. Implemented independent RealmaxActivity plus CompatUnityPlayer exposing exact legacy field and SurfaceView getter, retaining Unity6 lifecycle delegation. No firmware or factory service replacement.
