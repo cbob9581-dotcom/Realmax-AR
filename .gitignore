@@ -1,0 +1,17 @@
+/.backups/
+/sdk/
+/Export_apk/
+.env
+.env.*
+!.env.example
+**/secrets.json
+**/local.settings.json
+**/Library/
+**/Temp/
+**/Obj/
+**/Logs/
+**/UserSettings/
+**/Builds/
+**/__pycache__/
+*.keystore
+*.jks

@@ -1,0 +1,473 @@
+{
+  "created_at": "20261109-164753",
+  "serial": "ff72859b",
+  "scope": "Source assets, installed key APKs, current configuration; NOT full firmware or app-private data",
+  "source_files": [
+    {
+      "path": "sdk/Android SDK.rar",
+      "bytes": 1865275685,
+      "sha256": "8a412a7641e84b93e105e9cf4f9e89a9315c5955325d1a2e985ed2c4fa91f620"
+    },
+    {
+      "path": "sdk/jdk-8u45-windows-x64.exe",
+      "bytes": 189180832,
+      "sha256": "ca11aef69e65fbf666f6a5abc73dcc9ccc28596642d52a2415965a319a190574"
+    },
+    {
+      "path": "sdk/RealmaxSDK2019-2-28/RealmaxSDK2019-2-28/LeapMotionSDK.unitypackage",
+      "bytes": 35605655,
+      "sha256": "b573573420b0633f1de149f651db7eaf6e0e5ec6555a152661a3a4b965a04527"
+    },
+    {
+      "path": "sdk/RealmaxSDK2019-2-28/RealmaxSDK2019-2-28/LeapMotionSDK╦Á├¸╬─ÁÁ.docx",
+      "bytes": 254953,
+      "sha256": "c16970de31fc2ef637391b1d20ffca24dd9250ef92dfc07be6f31451773656b0"
+    },
+    {
+      "path": "sdk/RealmaxSDK2019-2-28/RealmaxSDK2019-2-28/RealmaxSDK.unitypackage",
+      "bytes": 5904616,
+      "sha256": "79eb349ddc9d78cbaa4b138bd19d8df57ab3824e66dade054f5e8e2e86929a1b"
+    },
+    {
+      "path": "sdk/RealmaxSDK2019-2-28/RealmaxSDK2019-2-28/RealmaxSDK╦Á├¸╬─ÁÁ.docx",
+      "bytes": 228630,
+      "sha256": "dad6906db46581f4defdd9fe1c577412bcb76dc5ae0d4a5319318c484a879e10"
+    },
+    {
+      "path": "sdk/RealmaxSDK2019-2-28.zip",
+      "bytes": 41964750,
+      "sha256": "4800cbc32ac5ed6fb4c5750e64bfe774282bdb51acd80e4737f89d5bdf218060"
+    },
+    {
+      "path": "Export_apk/com.realmax.launcher_1.31.apk",
+      "bytes": 42515805,
+      "sha256": "d1484b4d335456818d2bc83c583230f00839625ae3cbd35291b41bfca7694b6e"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Adjust_1.0.apk",
+      "bytes": 29015944,
+      "sha256": "f270543c9d843fdd194281e8aa2c38b5755d19e4214099812b5e166babe62c32"
+    },
+    {
+      "path": "Export_apk/com.RMSR.AdjustLM.apk",
+      "bytes": 29666690,
+      "sha256": "6283aeb3a58cf169523377fe854f5a1862667b61d918df58ebcdfe06ed0ccd28"
+    },
+    {
+      "path": "Export_apk/com.RMSR.AIS.apk",
+      "bytes": 76561512,
+      "sha256": "9ed0940c142435931e7481f22530c1a5b40a5a78cb1916e3880a30b009730190"
+    },
+    {
+      "path": "Export_apk/com.RMSR.AllShow.apk",
+      "bytes": 37764368,
+      "sha256": "252fd37ee2f2937ee2517a3267b86570e5ffa47a7460dd2e9180f8048cc7f6ad"
+    },
+    {
+      "path": "Export_apk/com.RMSR.AltmanHost.apk",
+      "bytes": 134070548,
+      "sha256": "c22abcb9d8e40c6b15380a1acabd44ba9e35def449abb7ef6a90e31973d26db5"
+    },
+    {
+      "path": "Export_apk/com.RMSR.AppStore.apk",
+      "bytes": 26578443,
+      "sha256": "aa75bcb9b74d50c7609d7ff7032047642394185967d359fa8d5bb7951f7d1bd7"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Ardo.apk",
+      "bytes": 53323103,
+      "sha256": "26fd77a23398f984f0adc92749526a6e9806a4e7956e09fe76a9ac0f80977aa7"
+    },
+    {
+      "path": "Export_apk/com.RMSR.AttentionRunning.apk",
+      "bytes": 48528139,
+      "sha256": "e5af99655309bc3bfc2255ab224e0de8b9aeca060fdeb99e280e849dd5a4075e"
+    },
+    {
+      "path": "Export_apk/com.RMSR.caipu.apk",
+      "bytes": 52798768,
+      "sha256": "48184fdf259310d69e954c7d85453fea5a60b28abf390894af778ddf33fd9021"
+    },
+    {
+      "path": "Export_apk/com.RMSR.CatchButterfly.apk",
+      "bytes": 60082197,
+      "sha256": "1fd08ec9c1da6b722170323155b8cb8fa2dee88984d1969dbeca143146b47ce0"
+    },
+    {
+      "path": "Export_apk/com.RMSR.CatchFish.apk",
+      "bytes": 114269312,
+      "sha256": "d87d2af0038a7b217aab54aa18062c0e9d01b2ee52e4a67b02ddb5a36c1dc930"
+    },
+    {
+      "path": "Export_apk/com.RMSR.CatchGhost.apk",
+      "bytes": 81325449,
+      "sha256": "1360727fcaca680b6e4ce65b4be76c3583b347de00894d755300cb5af3ebecf3"
+    },
+    {
+      "path": "Export_apk/com.RMSR.ChinaShow.apk",
+      "bytes": 42821584,
+      "sha256": "400ee022a095b3ef401998515a74d960390a1343b030053d9e06876570335752"
+    },
+    {
+      "path": "Export_apk/com.RMSR.cpScene.apk",
+      "bytes": 176144994,
+      "sha256": "1647140ec28b4f95003ecc43aebdea33392ef464b19b6a86f60655325f2e936f"
+    },
+    {
+      "path": "Export_apk/com.RMSR.DanceTeacher.apk",
+      "bytes": 85830374,
+      "sha256": "02a7abc38bfdf9e359d5d6d01a5ad50f1cb0e672a41115cb76f5d8004f8f6fb2"
+    },
+    {
+      "path": "Export_apk/com.RMSR.DigitalPerson.apk",
+      "bytes": 136682228,
+      "sha256": "1340ac3ea6e190e2cedc8f3f59cc27a2d5d52e77bb77dbab8d8adf2b4c20f903"
+    },
+    {
+      "path": "Export_apk/com.RMSR.DinosaursWorld.apk",
+      "bytes": 129713217,
+      "sha256": "a3efad007a4fbf91d5f5d311b920fad2167911dad98f5ad601924fb319023080"
+    },
+    {
+      "path": "Export_apk/com.RMSR.DownTheBlock.apk",
+      "bytes": 28472489,
+      "sha256": "1e06b31fb0c317f5a9fc0475bbce87331287eb1ac045befd3d20812d0a05f1e5"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Draw.apk",
+      "bytes": 28155830,
+      "sha256": "c31bd42512b1322d2caf3648cd374366f5cce68afac69e2578578a3f32a670af"
+    },
+    {
+      "path": "Export_apk/com.RMSR.ExampleScene.apk",
+      "bytes": 28026216,
+      "sha256": "6164b8c471a762463e8953b9f20ff0349919e70e10332d4df85bed0af03c9907"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Galaxy.apk",
+      "bytes": 82697639,
+      "sha256": "2031128627053d609fa6a0337f09fab9ed7d08c2a1851d7697ea77f56a546546"
+    },
+    {
+      "path": "Export_apk/com.RMSR.HoureBreak.apk",
+      "bytes": 63703354,
+      "sha256": "0da108d4102550558ad3134eab725b54c7f6e464365b6d3b1b85d9c1c173cf82"
+    },
+    {
+      "path": "Export_apk/com.RMSR.mainclient_0.6.apk",
+      "bytes": 22877959,
+      "sha256": "690aaa54ec545378fd3f7960dcb46ab14d68b68c665178f54da50ff2aef9fb9e"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Cartoon.apk",
+      "bytes": 138115607,
+      "sha256": "dcacc843652180054a45ebf65cf8e06f81dba7822964f7dddd7c69f236ae7df1"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_ChineseFantasy.apk",
+      "bytes": 69618971,
+      "sha256": "bf64405dc300aa3e906b5321c1c8d753dfba0a44cd8c21c97d1f3bebd9337a25"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_ChineseFantasy02.apk",
+      "bytes": 60830341,
+      "sha256": "845832d09d1d709f063f486fcf3c6a3d3f5290b615a7a25209eb3b67f7cc0804"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_IceSnow.apk",
+      "bytes": 120715810,
+      "sha256": "b8b4ad3b709fb000c2fe754089793e4c1f835ed396d8c79eac0590a2fb146d90"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Marvel01.apk",
+      "bytes": 77432345,
+      "sha256": "bd7a0d48787b17f567945740007a769ccf8c8bfb7ea1849856c99f8428234a39"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Marvel02.apk",
+      "bytes": 77586657,
+      "sha256": "e8e0280f8863dae3b8751921fa784706d4abe126d9a9e4b875cd56c2257cd96f"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Natural01.apk",
+      "bytes": 70651177,
+      "sha256": "2d035324145cea7fc672c1a72e0c433a8e1da6dd5dc54313080778a09c1aee16"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Natural02.apk",
+      "bytes": 68787301,
+      "sha256": "aa33b82b0638618999350fdeba485b2293813b273fad7cc32397f4494092d1d1"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Robot01.apk",
+      "bytes": 81957953,
+      "sha256": "635ba78e05fd936d9031df539ab334c3a50dcd62abb215fce4822f122743fc5c"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Science.apk",
+      "bytes": 81053087,
+      "sha256": "89e151c3df0d7e41f11ed4900a2fea2e7d0b6b1931f4561412359054488c1890"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Meta_Science02.apk",
+      "bytes": 82381269,
+      "sha256": "9f06f4f81e54a16cf785be62335734a6aed548a1e82110b66415894bf945f1c8"
+    },
+    {
+      "path": "Export_apk/com.RMSR.MicrophoneGame.apk",
+      "bytes": 46684417,
+      "sha256": "5559a0e23feac2cdcaaa0c4159e34da36e6598d7115aefbc0d728ff96801ed84"
+    },
+    {
+      "path": "Export_apk/com.RMSR.miracast.apk",
+      "bytes": 23251462,
+      "sha256": "0c77e2fb09f5f43be5816e0689899773543cb26bba258bb7b8fec360dc2af8b2"
+    },
+    {
+      "path": "Export_apk/com.RMSR.MulScene_Volleyball.apk",
+      "bytes": 99810019,
+      "sha256": "ff5132a18a7dcc0fc4b5dba1aff86801b1b526554bcb2d76928abb9704bccba9"
+    },
+    {
+      "path": "Export_apk/com.RMSR.QianFeature1.apk",
+      "bytes": 31846560,
+      "sha256": "d600215edb694ff351d3dd64ebbfffe89e9afbc297dd9b96e4d155fbf4f3e203"
+    },
+    {
+      "path": "Export_apk/com.RMSR.QianFeature2.apk",
+      "bytes": 31818064,
+      "sha256": "0f8c5befc7f8a168929f67b4037ffde7d58e972451bcca98cf8cb78765eca0b7"
+    },
+    {
+      "path": "Export_apk/com.RMSR.QianMode.apk",
+      "bytes": 29038444,
+      "sha256": "2a0e9f944b5e694ce9bf8f81289ddf217a057e0704357418f99582ca4f296922"
+    },
+    {
+      "path": "Export_apk/com.RMSR.RobotShow.apk",
+      "bytes": 377053600,
+      "sha256": "b68c219f5a67646159fc454bcd72958260a7dd5d5527506133ac2a887461915c"
+    },
+    {
+      "path": "Export_apk/com.RMSR.RoomEscape03.apk",
+      "bytes": 75630177,
+      "sha256": "cc6fbf85f6bc06582893cd7f4ef50b0bd1dc42bd988ac669968e99a791fcd503"
+    },
+    {
+      "path": "Export_apk/com.RMSR.RoomEscape04.apk",
+      "bytes": 80618491,
+      "sha256": "c153f5c9de2bb297ef6c744242e2cb9eb0aeb8e2d8a61c92e956c7fd97e851c6"
+    },
+    {
+      "path": "Export_apk/com.RMSR.RoomEscape05.apk",
+      "bytes": 92787837,
+      "sha256": "2a096f1c0e6d57e67a783158768d879802e73aafb3bdc8282937582d3f504fcc"
+    },
+    {
+      "path": "Export_apk/com.RMSR.RoomEscape06.apk",
+      "bytes": 81860635,
+      "sha256": "7c17c8b388eeb0d236e74f1f9e570063c065208a91cc59cf391aa6f24d9c9145"
+    },
+    {
+      "path": "Export_apk/com.RMSR.SuperAR001_2.6.apk",
+      "bytes": 214010878,
+      "sha256": "7f6528a946d914937c69521bf87e4886a2c83e4b3ceb758a9362de91fd8fcd6d"
+    },
+    {
+      "path": "Export_apk/com.RMSR.SuperAR003.apk",
+      "bytes": 215697979,
+      "sha256": "06332e60c2860b1d2f4689a5d127d21d9ac1b271f58e9c3bf6156f7252bef32d"
+    },
+    {
+      "path": "Export_apk/com.RMSR.SuperAR003_2.6.apk",
+      "bytes": 215862453,
+      "sha256": "4ef5ce6df8e4e8e7f7dd98b0e9e78a6641e9fda83cb076a94db6644bf57297ef"
+    },
+    {
+      "path": "Export_apk/com.RMSR.TechnologyShow.apk",
+      "bytes": 120051907,
+      "sha256": "9d4caffc3dccca55a1acdaa83e37877b3d498207a0b84cea5846110feb686202"
+    },
+    {
+      "path": "Export_apk/com.RMSR.training_eyes.apk",
+      "bytes": 76337200,
+      "sha256": "2500f4faf9191357f8357e82ac543096161e76ff0edbdc9979f4edfa050c5206"
+    },
+    {
+      "path": "Export_apk/com.RMSR.Whale.apk",
+      "bytes": 55271215,
+      "sha256": "f7f072f63a31c6d3a2b34742face07e2103b2870915b2b8985060c3d2ef065eb"
+    },
+    {
+      "path": "Export_apk/com.RMSR.xiaokulou.apk",
+      "bytes": 41455806,
+      "sha256": "113adbb8875f8203f378d6956f73ba9ee98334fb0a8b99ba2cd4da0bc48b398b"
+    },
+    {
+      "path": "Export_apk/com.RMSR.ZodiacMemory.apk",
+      "bytes": 128317067,
+      "sha256": "c50d02ab1f6512ba83e15e92320226a6675a364ab854fe55476592c15df4186f"
+    },
+    {
+      "path": "Export_apk/com.setting.rm_1.11.apk",
+      "bytes": 39720686,
+      "sha256": "92f2bfd9d80b1781087008c67e2f6915e0ca76c0f4e4dfe94ef1fe652b38b07b"
+    },
+    {
+      "path": "Export_apk/gjgjx_96485.zip",
+      "bytes": 6463618,
+      "sha256": "2c15041f9c4b32be479a1210d63c444208cda7d659cbd87b9e4ae22ce8093bb6"
+    },
+    {
+      "path": "Export_apk/l/com.launcher.rm_1.15 黑色测试.apk",
+      "bytes": 41046325,
+      "sha256": "e3fee022499eb89259ae7f20d6831ff8ded2877eacb8b06b06cb0a39fb361363"
+    },
+    {
+      "path": "Export_apk/l/com.launcher.rm_1.1黄色测试.apk",
+      "bytes": 41411537,
+      "sha256": "31ade43b3da9a23e18c21015ebb3c84a8374921b89ee0aa9bb21b3e249a19aa4"
+    },
+    {
+      "path": "Export_apk/l/com.realmax.launcher.apk",
+      "bytes": 42515805,
+      "sha256": "d1484b4d335456818d2bc83c583230f00839625ae3cbd35291b41bfca7694b6e"
+    },
+    {
+      "path": "Export_apk/l/com.realmax.launcher_1.0红色测试.apk",
+      "bytes": 38129695,
+      "sha256": "5682e869835fb125352252c11a1e5287860cabe89c2723c567c207b543e5ad13"
+    },
+    {
+      "path": "Export_apk/scrcpy-win64-v5.0.1.zip",
+      "bytes": 11264634,
+      "sha256": "b12a2c4ee8be317422451fc7dcf8ee20a71b5ea7ef9ad73ddd825a25316227a5"
+    }
+  ],
+  "device_apks": [
+    {
+      "package": "com.realmax.launcher",
+      "remote_path": "/data/app/com.realmax.launcher-1/base.apk",
+      "file": "com.realmax.launcher.apk",
+      "bytes": 42515805,
+      "sha256": "d1484b4d335456818d2bc83c583230f00839625ae3cbd35291b41bfca7694b6e"
+    },
+    {
+      "package": "com.setting.rm",
+      "remote_path": "/data/app/com.setting.rm-1/base.apk",
+      "file": "com.setting.rm.apk",
+      "bytes": 39720686,
+      "sha256": "92f2bfd9d80b1781087008c67e2f6915e0ca76c0f4e4dfe94ef1fe652b38b07b"
+    },
+    {
+      "package": "com.RMSR.ExampleScene",
+      "remote_path": "/data/app/com.RMSR.ExampleScene-1/base.apk",
+      "file": "com.RMSR.ExampleScene.apk",
+      "bytes": 28026216,
+      "sha256": "6164b8c471a762463e8953b9f20ff0349919e70e10332d4df85bed0af03c9907"
+    },
+    {
+      "package": "com.leapmotion.leapdaemon",
+      "remote_path": "/data/app/com.leapmotion.leapdaemon-2/base.apk",
+      "file": "com.leapmotion.leapdaemon.apk",
+      "bytes": 128934915,
+      "sha256": "abbce5f81d7e41ea966a62ae636735341fcab918310fd4e8c18505a4aadcb419"
+    },
+    {
+      "package": "com.RMSR.Adjust",
+      "remote_path": "/data/app/com.RMSR.Adjust-1/base.apk",
+      "file": "com.RMSR.Adjust.apk",
+      "bytes": 29015944,
+      "sha256": "f270543c9d843fdd194281e8aa2c38b5755d19e4214099812b5e166babe62c32"
+    },
+    {
+      "package": "com.RMSR.AdjustLM",
+      "remote_path": "/data/app/com.RMSR.AdjustLM-1/base.apk",
+      "file": "com.RMSR.AdjustLM.apk",
+      "bytes": 29666690,
+      "sha256": "6283aeb3a58cf169523377fe854f5a1862667b61d918df58ebcdfe06ed0ccd28"
+    }
+  ],
+  "snapshot_files": [
+    {
+      "path": "device/properties.txt",
+      "bytes": 16089,
+      "sha256": "de37bf9a8538417aefd356a47dfad52a41cc46e5d68b4e345509f4c78740114d"
+    },
+    {
+      "path": "device/packages.txt",
+      "bytes": 19184,
+      "sha256": "b8e30617284146559a562024ee5bc6193c972ccb91943b83e7896b466ec303df"
+    },
+    {
+      "path": "device/disabled-packages.txt",
+      "bytes": 59,
+      "sha256": "5c415644e2a3ed2b168d84a4d34f61600534a7f960c0907bc84be5f3fb4611d9"
+    },
+    {
+      "path": "device/audio.txt",
+      "bytes": 2403,
+      "sha256": "677b45dd604a6c0c313a97ab5df559a7f9dc65de0a470ff108123f50e58044bc"
+    },
+    {
+      "path": "device/camera.txt",
+      "bytes": 48955,
+      "sha256": "103bd277a458ed02a5e4500c6f2b1bde9bdd86fef4980945ebe6db8d5861c386"
+    },
+    {
+      "path": "device/audio-policy.txt",
+      "bytes": 49110,
+      "sha256": "1d092121e5f1e9d76dc237f972bb3faad4c5e31b47d551ceae3d92dc03ae458f"
+    },
+    {
+      "path": "device/mounts.txt",
+      "bytes": 2400,
+      "sha256": "906cdb2eeef3da0c1f4cdbedc82295cf410f890df09552938874e2031f6363f9"
+    },
+    {
+      "path": "device/features.txt",
+      "bytes": 2516,
+      "sha256": "43a9e8d521ce9550261951e809b06e359dcbff1e9e7db5a2859627a83370fb7b"
+    },
+    {
+      "path": "device/display.txt",
+      "bytes": 49,
+      "sha256": "8818803b8dd215e7a051f14b1144507f1fcd4248a9383e398e71f9208136e71a"
+    },
+    {
+      "path": "device/settings-selected.txt",
+      "bytes": 15,
+      "sha256": "a0c4bac320156ae28a7340a4e21e5a355a4ce876aac0163d4fc520381a7a26d2"
+    },
+    {
+      "path": "device/com.realmax.launcher-package.txt",
+      "bytes": 5344,
+      "sha256": "bfa564c40600aea0307c3a3aa81a082ed8e17545d30ded0ce77b41cdb52a53f5"
+    },
+    {
+      "path": "device/com.setting.rm-package.txt",
+      "bytes": 3999,
+      "sha256": "b7dd32d0863db6a5f81e9e6a15cce901624252a3f7cdeb0c820ed9b58818e5c9"
+    },
+    {
+      "path": "device/com.RMSR.ExampleScene-package.txt",
+      "bytes": 3412,
+      "sha256": "b1034993c1905e5f92c8a6867eefc8f10e747bc28aeee2cfba7b406ceb67cc08"
+    },
+    {
+      "path": "device/com.leapmotion.leapdaemon-package.txt",
+      "bytes": 2828,
+      "sha256": "3e6d587bbc3d154b5c1f81d3ecb5c44d11dc009d5f540ec8a6a8a37cdd4efcac"
+    },
+    {
+      "path": "device/com.RMSR.Adjust-package.txt",
+      "bytes": 2987,
+      "sha256": "8e89348378bdba4d627bd62e423c6b477d3b1bf5e164b2a0398d2721711db39d"
+    },
+    {
+      "path": "device/com.RMSR.AdjustLM-package.txt",
+      "bytes": 2384,
+      "sha256": "82b29c22875dbba06d8b8fb7a516bedf378333d8a79a890c80ec93a3fe164fef"
+    }
+  ]
+}
