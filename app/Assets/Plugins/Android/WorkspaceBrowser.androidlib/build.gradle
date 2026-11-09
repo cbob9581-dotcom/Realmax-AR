@@ -1,0 +1,8 @@
+apply plugin: 'com.android.library'
+android {
+ namespace 'com.ar.workspace'
+ compileSdk 35
+ defaultConfig { minSdk 25; targetSdk 35 }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_1_8; targetCompatibility JavaVersion.VERSION_1_8 }
+}
+dependencies { implementation 'org.mozilla.geckoview:geckoview:143.0.20251003115653' }

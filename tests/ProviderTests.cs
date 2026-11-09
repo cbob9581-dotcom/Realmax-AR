@@ -1,0 +1,5 @@
+using System;
+class ProviderTests {
+ static void Check(bool b,string m){if(!b)throw new Exception(m);}
+ static int Main(){try{string e;Check(ProviderRules.Validate("openai-compatible","https://example.com/v1/chat/completions","model","key",out e),"Valid compatible endpoint rejected");Check(!ProviderRules.Validate("openai-compatible","http://example.com","m","k",out e),"HTTP accepted");Check(!ProviderRules.Validate("gemini","https://u:p@example.com","m","k",out e),"URL credentials accepted");Check(!ProviderRules.Validate("unknown","https://example.com","m","k",out e),"Unknown provider accepted");Check(!ProviderRules.Validate("anthropic","https://example.com","","k",out e),"Empty model accepted");Check(!ProviderRules.Validate("anthropic","https://example.com","m","k\r\nx:bad",out e),"Header injection accepted");Check(!ProviderRules.Validate("gemini","https://example.com","m","",out e),"Missing key accepted");Console.WriteLine("7 provider validation checks passed");return 0;}catch(Exception ex){Console.Error.WriteLine(ex.Message);return 1;}}
+}
