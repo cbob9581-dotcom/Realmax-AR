@@ -30,6 +30,7 @@ public class SpatialBrowser {
  public SpatialBrowser(Activity a,int w,int h){activity=a;width=w;height=h;activity.runOnUiThread(this::start);}
  private void start(){try{
 
+  android.system.Os.setenv("MOZ_DISABLE_SIG_HANDLER","1",true);
   if(runtime==null)runtime=GeckoRuntime.create(activity.getApplicationContext());
   session=new GeckoSession(new GeckoSessionSettings.Builder().usePrivateMode(false).userAgentMode(GeckoSessionSettings.USER_AGENT_MODE_DESKTOP).suspendMediaWhenInactive(true).build());
   session.setMediaSessionDelegate(new MediaSession.Delegate(){
@@ -38,7 +39,7 @@ public class SpatialBrowser {
   });
   session.open(runtime);
   frames=new HandlerThread("WorkspaceBrowserFrames");frames.start();
-  reader=ImageReader.newInstance(width,height,PixelFormat.RGBA_8888,3);
+  reader=ImageReader.newInstance(width,height,PixelFormat.RGBX_8888,3);
   reader.setOnImageAvailableListener(source->{
    try(Image image=source.acquireLatestImage()){
     if(image==null||closed)return;long now=SystemClock.uptimeMillis();if(now-lastFrame<100)return;lastFrame=now;
@@ -48,7 +49,7 @@ public class SpatialBrowser {
      else for(int x=0;x<width;x++)for(int c=0;c<4;c++)pixels[(y*width+x)*4+c]=buf.get(y*row+x*stride+c);
     }
     synchronized(lock){latest=pixels;}
-   }catch(Exception e){status="Frame error: "+e.getClass().getSimpleName();Log.e("ARWORKSPACE",status,e);}
+   }catch(Exception e){status="Frame error: "+e.getClass().getSimpleName();Log.e("ARWORKSPACE",status);}
   },new Handler(frames.getLooper()));
   display=session.acquireDisplay();display.surfaceChanged(new GeckoDisplay.SurfaceInfo.Builder(reader.getSurface()).size(width,height).build());
   session.setActive(true);session.setFocused(true);session.loadUri("https://www.bilibili.com/");

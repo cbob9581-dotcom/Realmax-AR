@@ -17,7 +17,7 @@ public static class ArBuild {
   EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android);
   PlayerSettings.companyName="ARWorkspace";PlayerSettings.productName="REALMAX Workspace";
   PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android,"com.ar.realmaxworkspace");
-  PlayerSettings.bundleVersion="0.1.1";PlayerSettings.Android.bundleVersionCode=2;
+  PlayerSettings.bundleVersion="0.1.2";PlayerSettings.Android.bundleVersionCode=3;
   PlayerSettings.Android.minSdkVersion=(AndroidSdkVersions)25;PlayerSettings.Android.targetSdkVersion=(AndroidSdkVersions)35;
   PlayerSettings.Android.targetArchitectures=AndroidArchitecture.ARMv7;
   PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Android,ScriptingImplementation.Mono2x);
@@ -33,10 +33,11 @@ public static class ArBuild {
   var rig=(GameObject)PrefabUtility.InstantiatePrefab(prefab);var m=rig.GetComponentInChildren<SvrManager>();
   if(!m||!m.leftCamera||!m.rightCamera)throw new Exception("Both factory eye cameras are required");
   m.settings.trackPosition=true;m.settings.poseStatusFade=false;m.settings.displayType=SvrManager.SvrSettings.eEyeBufferType.StereoSeperate;
+  m.leftCamera.cullingMask=~0;m.rightCamera.cullingMask=~0;
   m.leftCamera.clearFlags=CameraClearFlags.SolidColor;m.rightCamera.clearFlags=CameraClearFlags.SolidColor;m.leftCamera.backgroundColor=Color.black;m.rightCamera.backgroundColor=Color.black;
   new GameObject("WorkspaceApp").AddComponent<ArWorkspace>();
   Directory.CreateDirectory("Assets/Workspace/Scenes");var path="Assets/Workspace/Scenes/Workspace.unity";EditorSceneManager.SaveScene(scene,path);AssetDatabase.SaveAssets();
-  Directory.CreateDirectory("Builds");var report=BuildPipeline.BuildPlayer(new[]{path},"Builds/RealmaxWorkspace.apk",BuildTarget.Android,BuildOptions.Development);
+  Directory.CreateDirectory("Builds");var report=BuildPipeline.BuildPlayer(new[]{path},"Builds/RealmaxWorkspace.apk",BuildTarget.Android,BuildOptions.None);
   Debug.Log("ARWORKSPACE BUILD "+report.summary.result+" errors="+report.summary.totalErrors);
   if(report.summary.result!=BuildResult.Succeeded)throw new Exception("Android build failed");
  }

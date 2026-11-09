@@ -8,7 +8,7 @@ public class ArWorkspace : MonoBehaviour {
   Application.targetFrameRate=60;AudioListener.volume=0;
   font=Resources.Load<Font>("WorkspaceFont");if(!font)font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
   var go=new GameObject("SpatialWorkspace",typeof(RectTransform),typeof(Canvas));
-  panel=go.transform; var c=go.GetComponent<Canvas>();c.renderMode=RenderMode.WorldSpace;
+  go.layer=0;panel=go.transform; var c=go.GetComponent<Canvas>();c.renderMode=RenderMode.WorldSpace;c.worldCamera=SvrManager.Instance.leftCamera;
   var rect=go.GetComponent<RectTransform>();rect.sizeDelta=new Vector2(1400,1100);panel.localScale=Vector3.one*.0016f;
   panel.position=new Vector3(0,0,2.5f);
   Box("Background",new Vector2(0,0),new Vector2(1400,1100),new Color(.025f,.055f,.09f,.97f));
@@ -22,6 +22,7 @@ public class ArWorkspace : MonoBehaviour {
   Button("Scroll up",new Vector2(-420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(1);else if(browser)browser.Scroll(1);});
   Button("Scroll down",new Vector2(420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(-1);else if(browser)browser.Scroll(-1);});
   yield return new WaitForSecondsRealtime(2);Reposition();
+  Canvas.ForceUpdateCanvases();
   Debug.Log("ARWORKSPACE ready; independent stereo app; speaker muted");
 #if UNITY_ANDROID && !UNITY_EDITOR
   using(var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer"))using(var activity=player.GetStatic<AndroidJavaObject>("currentActivity"))using(var intent=activity.Call<AndroidJavaObject>("getIntent")){
@@ -54,9 +55,9 @@ public class ArWorkspace : MonoBehaviour {
   bool connected=ControllerDataCallBack.Instance&&ControllerDataCallBack.Instance.IsConnect;
   string s="SVR "+(m.status.running?"RUNNING":"STARTING")+" | pose "+m.status.pose+" | controller "+(connected?"CONNECTED":"WAITING")+" | stereo L/R";
   status.text=s+(browser?"\n"+browser.Status:"");
-  if(Time.unscaledTime>nextLog){nextLog=Time.unscaledTime+5;Debug.Log("ARWORKSPACE "+s+" | L="+(m.leftCamera?m.leftCamera.transform.localPosition.ToString():"missing")+" R="+(m.rightCamera?m.rightCamera.transform.localPosition.ToString():"missing"));}
+  if(Time.unscaledTime>nextLog){nextLog=Time.unscaledTime+5;Debug.Log("ARWORKSPACE "+s+" | L="+(m.leftCamera?m.leftCamera.transform.localPosition.ToString():"missing")+" mask="+m.leftCamera.cullingMask+" panel="+panel.position+" R="+(m.rightCamera?m.rightCamera.transform.localPosition.ToString():"missing"));}
  }
- Image Box(string name,Vector2 pos,Vector2 size,Color color){var g=new GameObject(name,typeof(RectTransform),typeof(Image));g.transform.SetParent(panel,false);var r=g.GetComponent<RectTransform>();r.anchoredPosition=pos;r.sizeDelta=size;var i=g.GetComponent<Image>();i.color=color;return i;}
- Text Label(string text,Vector2 pos,Vector2 size,int pixels){var g=new GameObject("Label",typeof(RectTransform),typeof(Text));g.transform.SetParent(panel,false);var r=g.GetComponent<RectTransform>();r.anchoredPosition=pos;r.sizeDelta=size;var t=g.GetComponent<Text>();t.font=font;t.fontSize=pixels;t.alignment=TextAnchor.MiddleCenter;t.color=Color.white;t.text=text;return t;}
+ Image Box(string name,Vector2 pos,Vector2 size,Color color){var g=new GameObject(name,typeof(RectTransform),typeof(Image));g.layer=0;g.transform.SetParent(panel,false);var r=g.GetComponent<RectTransform>();r.anchoredPosition=pos;r.sizeDelta=size;var i=g.GetComponent<Image>();i.color=color;return i;}
+ Text Label(string text,Vector2 pos,Vector2 size,int pixels){var g=new GameObject("Label",typeof(RectTransform),typeof(Text));g.layer=0;g.transform.SetParent(panel,false);var r=g.GetComponent<RectTransform>();r.anchoredPosition=pos;r.sizeDelta=size;var t=g.GetComponent<Text>();t.font=font;t.fontSize=pixels;t.alignment=TextAnchor.MiddleCenter;t.color=Color.white;t.text=text;return t;}
  void Button(string name,Vector2 pos,System.Action action){var i=Box(name,pos,new Vector2(380,110),new Color(.08f,.17f,.27f,.95f));var col=i.gameObject.AddComponent<BoxCollider>();col.size=new Vector3(380,110,10);var a=i.gameObject.AddComponent<SpatialAction>();a.image=i;a.action=action;Label(name,pos,new Vector2(370,100),32);}
 }
