@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Realmax;
 public class ArWorkspace : MonoBehaviour {
- Text status,body; Transform panel; Font font; int count; float nextLog; SpatialBrowserView browser; AiSpatialPanel ai; WebInputPanel webInput;
+ Coroutine recenterRoutine; Text status,body; Transform panel; Font font; int count; float nextLog; SpatialBrowserView browser; AiSpatialPanel ai; WebInputPanel webInput;
  IEnumerator Start(){
   Application.targetFrameRate=60;AudioListener.volume=0;
   font=Resources.Load<Font>("WorkspaceFont");if(!font)font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
@@ -12,16 +12,19 @@ public class ArWorkspace : MonoBehaviour {
   var rect=go.GetComponent<RectTransform>();rect.sizeDelta=new Vector2(1400,1100);panel.localScale=Vector3.one*.0016f;
   panel.position=new Vector3(0,0,2.5f);
   Box("Background",new Vector2(0,0),new Vector2(1400,1100),new Color(.025f,.055f,.09f,.97f));
-  Label("REALMAX WORKSPACE",new Vector2(0,490),new Vector2(1300,80),46);
+  Label("REALMAX WORKSPACE",new Vector2(-130,490),new Vector2(1000,80),42);
+  var recenter=Box("Recenter",new Vector2(530,490),new Vector2(270,80),new Color(.08f,.17f,.27f,.95f));var rc=recenter.gameObject.AddComponent<BoxCollider>();rc.size=new Vector3(270,80,10);var ra=recenter.gameObject.AddComponent<SpatialAction>();ra.image=recenter;ra.action=QueueRecenter;Label("Recenter",new Vector2(530,490),new Vector2(260,75),28);
   status=Label("Starting stereo runtime...",new Vector2(0,420),new Vector2(1300,80),27);
-  body=Label("Spatial display + factory controller\nPoint at a button and press the touchpad.\nHead gaze can also activate a button.",new Vector2(0,75),new Vector2(1250,270),34);
+  body=Label("Spatial display + factory controller\nPoint at a button and press the touchpad.\nMenu button: bring the panel into view.",new Vector2(0,75),new Vector2(1250,270),34);
   Button("Home",new Vector2(-420,-350),()=>{count++;if(browser)browser.Hide();if(ai)ai.Hide();if(webInput)webInput.Hide();body.gameObject.SetActive(true);body.text="REALMAX spatial workspace\nBrowser and AI run on this headset.\nController actions: "+count;});
   Button("Browser",new Vector2(0,-350),()=>ShowBrowser());
   Button("AI",new Vector2(420,-350),()=>ShowAi());
   Button("Keyboard / Recenter",new Vector2(0,-490),()=>{if(browser&&browser.IsVisible&&!(ai&&ai.IsVisible)){if(!webInput)webInput=gameObject.AddComponent<WebInputPanel>();webInput.Open(panel,font,browser);}else Reposition();});
   Button("Scroll up",new Vector2(-420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(1);else if(browser)browser.Scroll(1);});
   Button("Scroll down",new Vector2(420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(-1);else if(browser)browser.Scroll(-1);});
-  yield return new WaitForSecondsRealtime(2);Reposition();
+  ControllerKeyEvent.MenuKeyDown.AddListener(QueueRecenter);
+  ControllerKeyEvent.ReturnKeyDown.AddListener(QueueRecenter);
+  yield return PlaceWhenTracked();
   Canvas.ForceUpdateCanvases();
   Debug.Log("ARWORKSPACE ready; independent stereo app; speaker muted");
 #if UNITY_ANDROID && !UNITY_EDITOR
@@ -48,7 +51,23 @@ public class ArWorkspace : MonoBehaviour {
 
  void ShowBrowser(){if(webInput)webInput.Hide();if(ai)ai.Hide();body.gameObject.SetActive(false);if(!browser)browser=gameObject.AddComponent<SpatialBrowserView>();browser.Open(panel);}
  void ShowAi(){if(webInput)webInput.Hide();if(browser)browser.Hide();body.gameObject.SetActive(false);if(!ai)ai=gameObject.AddComponent<AiSpatialPanel>();ai.Open(panel,font);}
- void Reposition(){var m=SvrManager.Instance;if(m&&m.head){var f=m.head.forward;panel.position=m.head.position+f*2.5f;panel.rotation=Quaternion.LookRotation(f,Vector3.up);}}
+ void Reposition(){QueueRecenter();}
+ void QueueRecenter(){if(!panel)return;if(recenterRoutine!=null)StopCoroutine(recenterRoutine);recenterRoutine=StartCoroutine(PlaceWhenTracked());}
+ IEnumerator PlaceWhenTracked(){
+  // Factory Return listener recenters native tracking in the same event; wait for the resulting eye pose.
+  yield return new WaitForEndOfFrame();yield return new WaitForEndOfFrame();
+  int stable=0;
+  while(stable<30){var m=SvrManager.Instance;stable=m&&m.leftCamera&&WorkspacePlacement.TrackingReady(m.status.running,m.status.pose)?stable+1:0;yield return new WaitForEndOfFrame();}
+  var manager=SvrManager.Instance;var view=manager.leftCamera.transform;
+  var pose=WorkspacePlacement.InFront(view,2.5f);
+  if(manager.rightCamera)pose.position+=(manager.rightCamera.transform.position-view.position)*.5f;
+  panel.SetPositionAndRotation(pose.position,pose.rotation);
+  Canvas.ForceUpdateCanvases();
+  Debug.Log("ARWORKSPACE panel recentered | view="+view.position+" panel="+panel.position+" angle="+Vector3.Angle(view.forward,panel.position-view.position));
+  recenterRoutine=null;
+ }
+ void OnApplicationPause(bool paused){if(!paused&&panel)QueueRecenter();}
+ void OnDestroy(){ControllerKeyEvent.MenuKeyDown.RemoveListener(QueueRecenter);ControllerKeyEvent.ReturnKeyDown.RemoveListener(QueueRecenter);}
  void Update(){
   AudioListener.volume=0;
   var m=SvrManager.Instance;if(!m||!status)return;
