@@ -1,0 +1,17 @@
+{
+  "test": "camera",
+  "width": 360,
+  "height": 480,
+  "label": "Facing back:0",
+  "settings": {
+    "deviceId": "EcaiIvQOMD0GcW2imni/DXEJba+mOismeagWYsYxrvQ=",
+    "facingMode": "environment",
+    "frameRate": 30,
+    "groupId": "Ybc4YY7msHX8m50d4U2IP7FZROLdjKL3O6xG6WJ5ikk=",
+    "height": 480,
+    "width": 360
+  },
+  "ok": true,
+  "userAgent": "Mozilla/5.0 (Android 10; Mobile; rv:143.0) Gecko/143.0 Firefox/143.0",
+  "recorded_at": "2026-11-09T17:33:54.515638+08:00"
+}

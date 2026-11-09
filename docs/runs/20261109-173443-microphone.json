@@ -1,0 +1,11 @@
+{
+  "test": "microphone",
+  "label": "Default audio input device",
+  "sampleRate": 48000,
+  "peak": 0.04982276260852814,
+  "rms": 0.00618492077885429,
+  "ok": true,
+  "signalDetected": true,
+  "userAgent": "Mozilla/5.0 (Android 10; Mobile; rv:143.0) Gecko/143.0 Firefox/143.0",
+  "recorded_at": "2026-11-09T17:34:43.428872+08:00"
+}

@@ -44,3 +44,7 @@
 - Firefox Android 7 支持终止：https://blog.mozilla.org/futurereleases/2025/09/15/raising-the-minimum-android-version-for-firefox/
 - GeckoView：https://mozilla.github.io/geckoview/
 - B 站 HTML5 帮助：https://www.bilibili.com/blackboard/html5playerhelp.html
+
+## 2026-11-09 后续实测
+
+Firefox 143.0.4 ARM64 已安装运行；B 站首页和移动视频详情加载成功，视频播放仍未验证。浏览器通过本地临时诊断页收到相机 0 的视频帧和 48 kHz 麦克风非零输入；均已停止采集，没有保存或上传音视频。详见 [实测与回退记录](2026-11-09-capability-validation.md)。以上结果更新先前“尚未安装/尚未实际测试”的状态。
