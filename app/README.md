@@ -58,3 +58,5 @@
 
 保留安装包：`F:/AR/.backups/releases/0.1.2/RealmaxWorkspace.apk`。
 SHA256：`495BAB1C7EA25F1F75428D2524D76E84756F4B8338DBA15DA2DB9BE0D21528DD`。
+
+20:36 更新：用户确认手柄开机后，重新启动工作台已连接成功；蓝牙服务发现成功，Unity 状态为 CONNECTED。此前 WAITING 记录为历史状态。射线移动和按键触发仍待佩戴实测。
