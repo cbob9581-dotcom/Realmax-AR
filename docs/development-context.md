@@ -48,3 +48,14 @@
 ## 2026-11-09 后续实测
 
 Firefox 143.0.4 ARM64 已安装运行；B 站首页和移动视频详情加载成功，视频播放仍未验证。浏览器通过本地临时诊断页收到相机 0 的视频帧和 48 kHz 麦克风非零输入；均已停止采集，没有保存或上传音视频。详见 [实测与回退记录](2026-11-09-capability-validation.md)。以上结果更新先前“尚未安装/尚未实际测试”的状态。
+
+## 用户纠正与开发验收
+
+- 用户已实际用手柄玩过原厂游戏，应将手柄硬件可用作为已有实测事实。此前日志未见连接仅说明我们没有在选定应用/时刻验证到连接，不能推断手柄不可用。
+- 普通 Firefox Activity 仅用于网页与音视频接口验证，不满足双目 AR 产品目标。
+- 产品必须通过原厂 SvrCamera / SvrManager / SvrEye 的左右眼渲染链路呈现空间面板，并接入既有头部姿态和手柄输入。
+- 已确认 SDK 有两份同名 SvrCamera 预制体：Assets/Realmax/Prefab/SvrCamera.prefab 包含 Controller、HeadController、Reset；Assets/Realmax/SVR/Prefabs/SvrCamera.prefab 是另一套，不能仅按文件名任意使用。
+- 手柄走 ControllerDataCallBack / ControllerKeyEvent 与原厂 IStar 服务，不可假设它是普通 Android 鼠标。
+- 设备上已找到并补充备份 com.realm.androidsystemservice；IStarService 和 MainService 已被原厂设置绑定。现有服务无需因示例日志异常就重装或替换。
+- AR 浏览器需要验证网页渲染到纹理、左右眼看到同一空间面板、射线命中映射到网页坐标、点击/滚动/输入闭环。安装原版 Firefox 本身不会完成这些。
+- 本轮退出普通 Firefox 并回到原厂 ExampleScene；SVR 日志继续渲染，Android screencap 为黑图，无法据截图确认佩戴时的双目观感。
