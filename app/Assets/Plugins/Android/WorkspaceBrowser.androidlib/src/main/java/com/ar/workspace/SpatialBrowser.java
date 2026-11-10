@@ -31,8 +31,8 @@ public class SpatialBrowser {
  private void start(){try{
 
   android.system.Os.setenv("MOZ_DISABLE_SIG_HANDLER","1",true);
-  if(runtime==null)runtime=GeckoRuntime.create(activity.getApplicationContext());
-  session=new GeckoSession(new GeckoSessionSettings.Builder().usePrivateMode(false).userAgentMode(GeckoSessionSettings.USER_AGENT_MODE_DESKTOP).suspendMediaWhenInactive(true).build());
+  if(runtime==null)runtime=GeckoRuntime.create(activity.getApplicationContext(),new org.mozilla.geckoview.GeckoRuntimeSettings.Builder().displayDensityOverride(1.0f).build());
+  session=new GeckoSession(new GeckoSessionSettings.Builder().usePrivateMode(false).userAgentMode(GeckoSessionSettings.USER_AGENT_MODE_DESKTOP).viewportMode(GeckoSessionSettings.VIEWPORT_MODE_DESKTOP).suspendMediaWhenInactive(true).build());
   session.setMediaSessionDelegate(new MediaSession.Delegate(){
    @Override public void onActivated(GeckoSession s,MediaSession media){media.muteAudio(true);}
    @Override public void onPlay(GeckoSession s,MediaSession media){media.muteAudio(true);}
