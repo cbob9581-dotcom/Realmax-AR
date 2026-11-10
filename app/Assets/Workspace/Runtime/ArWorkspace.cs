@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Realmax;
 public class ArWorkspace : MonoBehaviour {
- Coroutine recenterRoutine; Text status,body; Transform panel; Font font; int count; float nextLog; SpatialBrowserView browser; AiSpatialPanel ai; WebInputPanel webInput;
+ float recoveryTime; string deviceStatus="Checking network and battery..."; Coroutine recenterRoutine; Text status,body; Transform panel; Font font; int count; float nextLog; SpatialBrowserView browser; AiSpatialPanel ai; WebInputPanel webInput;
  IEnumerator Start(){
   Application.targetFrameRate=60;AudioListener.volume=0;
   font=Resources.Load<Font>("WorkspaceFont");if(!font)font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
@@ -13,15 +13,15 @@ public class ArWorkspace : MonoBehaviour {
   panel.position=new Vector3(0,0,2.5f);
   Box("Background",new Vector2(0,0),new Vector2(1400,1100),new Color(.025f,.055f,.09f,.97f));
   Label("REALMAX WORKSPACE",new Vector2(-130,490),new Vector2(1000,80),42);
-  var recenter=Box("Recenter",new Vector2(530,490),new Vector2(270,80),new Color(.08f,.17f,.27f,.95f));var rc=recenter.gameObject.AddComponent<BoxCollider>();rc.size=new Vector3(270,80,10);var ra=recenter.gameObject.AddComponent<SpatialAction>();ra.image=recenter;ra.action=QueueRecenter;Label("Recenter",new Vector2(530,490),new Vector2(260,75),28);
+  var recenter=Box("Recenter",new Vector2(530,490),new Vector2(270,80),new Color(.08f,.17f,.27f,.95f));var rc=recenter.gameObject.AddComponent<BoxCollider>();rc.size=new Vector3(270,80,10);var ra=recenter.gameObject.AddComponent<SpatialAction>();ra.image=recenter;ra.action=QueueRecenter;Label("回正",new Vector2(530,490),new Vector2(260,75),28);
   status=Label("Starting stereo runtime...",new Vector2(0,420),new Vector2(1300,80),27);
-  body=Label("Spatial display + factory controller\nPoint at a button and press the touchpad.\nMenu button: bring the panel into view.",new Vector2(0,75),new Vector2(1250,270),34);
-  Button("Home",new Vector2(-420,-350),()=>{count++;if(browser)browser.Hide();if(ai)ai.Hide();if(webInput)webInput.Hide();body.gameObject.SetActive(true);body.text="REALMAX spatial workspace\nBrowser and AI run on this headset.\nController actions: "+count;});
-  Button("Browser",new Vector2(0,-350),()=>ShowBrowser());
-  Button("AI",new Vector2(420,-350),()=>ShowAi());
-  Button("Keyboard / Recenter",new Vector2(0,-490),()=>{if(browser&&browser.IsVisible&&!(ai&&ai.IsVisible)){if(!webInput)webInput=gameObject.AddComponent<WebInputPanel>();webInput.Open(panel,font,browser);}else Reposition();});
-  Button("Scroll up",new Vector2(-420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(1);else if(browser)browser.Scroll(1);});
-  Button("Scroll down",new Vector2(420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(-1);else if(browser)browser.Scroll(-1);});
+  body=Label("用手柄射线指向按钮，再按触摸板。\n也可用头部准星停留 4 秒选择。\n手柄菜单键：把面板召回眼前。",new Vector2(0,75),new Vector2(1250,270),34);
+  Button("主页",new Vector2(-420,-350),()=>{count++;if(browser)browser.Hide();if(ai)ai.Hide();if(webInput)webInput.Hide();body.gameObject.SetActive(true);body.text="REALMAX 双目工作台\n浏览器与 AI 在眼镜本机运行。\n已触发操作次数："+count;});
+  Button("浏览器",new Vector2(0,-350),()=>ShowBrowser());
+  Button("AI 问答",new Vector2(420,-350),()=>ShowAi());
+  Button("键盘 / 回正",new Vector2(0,-490),()=>{if(browser&&browser.IsVisible&&!(ai&&ai.IsVisible)){if(!webInput)webInput=gameObject.AddComponent<WebInputPanel>();webInput.Open(panel,font,browser);}else Reposition();});
+  Button("向上滚动",new Vector2(-420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(1);else if(browser)browser.Scroll(1);});
+  Button("向下滚动",new Vector2(420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(-1);else if(browser)browser.Scroll(-1);});
   ControllerKeyEvent.MenuKeyDown.AddListener(QueueRecenter);
   ControllerKeyEvent.ReturnKeyDown.AddListener(QueueRecenter);
   yield return PlaceWhenTracked();
@@ -29,7 +29,7 @@ public class ArWorkspace : MonoBehaviour {
   Debug.Log("ARWORKSPACE ready; independent stereo app; speaker muted");
 #if UNITY_ANDROID && !UNITY_EDITOR
   using(var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer"))using(var activity=player.GetStatic<AndroidJavaObject>("currentActivity"))using(var intent=activity.Call<AndroidJavaObject>("getIntent")){
-   if(intent.Call<string>("getStringExtra","startPage")=="browser")ShowBrowser();
+   if(intent.Call<string>("getStringExtra","startPage")!="home")ShowBrowser();
    if(intent.Call<bool>("getBooleanExtra","diagnostics",false))StartCoroutine(CaptureEyes());
   }
 #endif
@@ -64,7 +64,7 @@ public class ArWorkspace : MonoBehaviour {
   panel.SetPositionAndRotation(pose.position,pose.rotation);
   Canvas.ForceUpdateCanvases();
   Debug.Log("ARWORKSPACE panel recentered | view="+view.position+" panel="+panel.position+" angle="+Vector3.Angle(view.forward,panel.position-view.position));
-  recenterRoutine=null;
+  recoveryTime=0;recenterRoutine=null;
  }
  void OnApplicationPause(bool paused){if(!paused&&panel)QueueRecenter();}
  void OnDestroy(){ControllerKeyEvent.MenuKeyDown.RemoveListener(QueueRecenter);ControllerKeyEvent.ReturnKeyDown.RemoveListener(QueueRecenter);}
@@ -73,8 +73,16 @@ public class ArWorkspace : MonoBehaviour {
   var m=SvrManager.Instance;if(!m||!status)return;
   bool connected=ControllerDataCallBack.Instance&&ControllerDataCallBack.Instance.IsConnect;
   string s="SVR "+(m.status.running?"RUNNING":"STARTING")+" | pose "+m.status.pose+" | controller "+(connected?"CONNECTED":"WAITING")+" | stereo L/R";
-  status.text=s+(browser?"\n"+browser.Status:"");
-  if(Time.unscaledTime>nextLog){nextLog=Time.unscaledTime+5;Debug.Log("ARWORKSPACE "+s+" | L="+(m.leftCamera?m.leftCamera.transform.localPosition.ToString():"missing")+" mask="+m.leftCamera.cullingMask+" panel="+panel.position+" R="+(m.rightCamera?m.rightCamera.transform.localPosition.ToString():"missing"));}
+  if(WorkspacePlacement.TrackingReady(m.status.running,m.status.pose)&&m.leftCamera){
+   recoveryTime=WorkspacePlacement.NeedsRecovery(m.leftCamera.transform,panel.position)?recoveryTime+Time.unscaledDeltaTime:0;
+   if(recoveryTime>1.25f&&recenterRoutine==null){recoveryTime=0;QueueRecenter();}
+  }
+  status.text=deviceStatus+"\nController "+(connected?"connected":"waiting")+(browser?"\n"+browser.Status:"");
+  if(Time.unscaledTime>nextLog){nextLog=Time.unscaledTime+5;
+#if UNITY_ANDROID && !UNITY_EDITOR
+   try{using(var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer"))using(var activity=player.GetStatic<AndroidJavaObject>("currentActivity"))using(var info=new AndroidJavaClass("com.ar.workspace.DeviceInfo"))deviceStatus=info.CallStatic<string>("getStatus",activity);}catch(System.Exception){deviceStatus="Network/battery status unavailable";}
+#endif
+   Debug.Log("ARWORKSPACE "+s+" | L="+(m.leftCamera?m.leftCamera.transform.localPosition.ToString():"missing")+" mask="+m.leftCamera.cullingMask+" panel="+panel.position+" R="+(m.rightCamera?m.rightCamera.transform.localPosition.ToString():"missing"));}
  }
  Image Box(string name,Vector2 pos,Vector2 size,Color color){var g=new GameObject(name,typeof(RectTransform),typeof(Image));g.layer=0;g.transform.SetParent(panel,false);var r=g.GetComponent<RectTransform>();r.anchoredPosition=pos;r.sizeDelta=size;var i=g.GetComponent<Image>();i.color=color;return i;}
  Text Label(string text,Vector2 pos,Vector2 size,int pixels){var g=new GameObject("Label",typeof(RectTransform),typeof(Text));g.layer=0;g.transform.SetParent(panel,false);var r=g.GetComponent<RectTransform>();r.anchoredPosition=pos;r.sizeDelta=size;var t=g.GetComponent<Text>();t.font=font;t.fontSize=pixels;t.alignment=TextAnchor.MiddleCenter;t.color=Color.white;t.text=text;return t;}

@@ -37,6 +37,22 @@ public class SpatialBrowser {
    @Override public void onActivated(GeckoSession s,MediaSession media){media.muteAudio(true);}
    @Override public void onPlay(GeckoSession s,MediaSession media){media.muteAudio(true);}
   });
+  session.setNavigationDelegate(new GeckoSession.NavigationDelegate(){
+   @Override public org.mozilla.geckoview.GeckoResult<GeckoSession> onNewSession(GeckoSession s,String uri){
+    if(isWebUrl(uri)){activity.runOnUiThread(()->s.loadUri(uri));status="Opening link in spatial browser";}else status="App link blocked; use the web page";
+    return null;
+   }
+   @Override public org.mozilla.geckoview.GeckoResult<org.mozilla.geckoview.AllowOrDeny> onLoadRequest(GeckoSession s,LoadRequest request){
+    boolean allow=isWebUrl(request.uri)||"about:blank".equals(request.uri);
+    if(!allow)status="App link blocked; use the web page";
+    return org.mozilla.geckoview.GeckoResult.fromValue(allow?org.mozilla.geckoview.AllowOrDeny.ALLOW:org.mozilla.geckoview.AllowOrDeny.DENY);
+   }
+   @Override public org.mozilla.geckoview.GeckoResult<String> onLoadError(GeckoSession s,String uri,org.mozilla.geckoview.WebRequestError error){status="Page load failed ("+error.code+"); check network";return null;}
+  });
+  session.setProgressDelegate(new GeckoSession.ProgressDelegate(){
+   @Override public void onPageStart(GeckoSession s,String uri){status="Loading HTTPS page...";}
+   @Override public void onPageStop(GeckoSession s,boolean success){status=success?"HTTPS page loaded":"Page load failed; check network";Log.i("ARWORKSPACE",success?"Web page load succeeded":"Web page load failed");}
+  });
   session.open(runtime);
   frames=new HandlerThread("WorkspaceBrowserFrames");frames.start();
   reader=ImageReader.newInstance(width,height,PixelFormat.RGBX_8888,3);
@@ -57,7 +73,8 @@ public class SpatialBrowser {
  }catch(Exception e){status="Browser initialization failed: "+e.getClass().getSimpleName();Log.e("ARWORKSPACE",status,e);}}
  public byte[] takeFrame(){synchronized(lock){byte[] p=latest;latest=null;return p;}}
  public String getStatus(){return status;}
- public void load(String url){if(url==null||!(url.startsWith("https://")||url.startsWith("http://127.0.0.1"))){status="HTTPS URL required";return;}activity.runOnUiThread(()->{if(session!=null)session.loadUri(url);});}
+ private static boolean isWebUrl(String url){return url!=null&&(url.startsWith("https://")||url.startsWith("http://127.0.0.1:"));}
+ public void load(String url){if(!isWebUrl(url)){status="HTTPS URL required";return;}activity.runOnUiThread(()->{if(session!=null)session.loadUri(url);});}
  public void typeText(String text){activity.runOnUiThread(()->{if(session!=null&&text!=null)session.getTextInput().onKeyMultiple(android.view.KeyEvent.KEYCODE_UNKNOWN,1,new android.view.KeyEvent(SystemClock.uptimeMillis(),text,android.view.KeyCharacterMap.VIRTUAL_KEYBOARD,0));});}
  public void back(){activity.runOnUiThread(()->{if(session!=null)session.goBack();});}
  public void click(int x,int y){activity.runOnUiThread(()->{if(session==null)return;long t=SystemClock.uptimeMillis();touch(t,t,MotionEvent.ACTION_DOWN,x,y);touch(t,t+40,MotionEvent.ACTION_UP,x,y);});}

@@ -26,6 +26,6 @@ public class SpatialBrowserView : MonoBehaviour {
  public void TypeText(string text){if(engine!=null)engine.Call("typeText",text);}
  public void Back(){if(engine!=null)engine.Call("back");}
  public void Load(string url){if(engine!=null)engine.Call("load",url);}
- void Update(){if(engine==null||!state.Active||Time.unscaledTime<nextFrame)return;nextFrame=Time.unscaledTime+.12f;try{var bytes=engine.Call<byte[]>("takeFrame");if(bytes!=null&&bytes.Length==Width*Height*4){texture.LoadRawTextureData(bytes);texture.Apply(false,false);if(!firstFrame){firstFrame=true;Debug.Log("ARWORKSPACE first GeckoView texture frame "+Width+"x"+Height);}}Status=engine.Call<string>("getStatus");}catch(System.Exception e){Status="Browser frame error: "+e.GetType().Name;}}
+ void Update(){if(engine==null||!state.Active||Time.unscaledTime<nextFrame)return;nextFrame=Time.unscaledTime+.12f;try{var signed=engine.Call<sbyte[]>("takeFrame");if(signed!=null&&signed.Length==Width*Height*4){var bytes=new byte[signed.Length];System.Buffer.BlockCopy(signed,0,bytes,0,bytes.Length);texture.LoadRawTextureData(bytes);texture.Apply(false,false);if(!firstFrame){firstFrame=true;Debug.Log("ARWORKSPACE first GeckoView texture frame "+Width+"x"+Height);}}Status=engine.Call<string>("getStatus");}catch(System.Exception e){Status="Browser frame error: "+e.GetType().Name;}}
  void OnDestroy(){if(engine!=null){engine.Call("close");engine.Dispose();engine=null;}if(surface){var mat=surface.GetComponent<Renderer>().sharedMaterial;if(mat)Destroy(mat);Destroy(surface);}if(texture)Destroy(texture);}
 }

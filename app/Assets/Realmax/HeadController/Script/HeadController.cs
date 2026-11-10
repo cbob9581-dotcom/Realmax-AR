@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Realmax
 {
@@ -100,7 +100,8 @@ namespace Realmax
 				IControllerPointHandle trigger = CurrentPointTarget.GetComponent<IControllerPointHandle>();
 				if(trigger != null)
 				{
-					trigger.OnTrigger();
+					var spatial=trigger as ISpatialPointerTarget;
+                        if(spatial!=null)spatial.TriggerFrom(new Ray(transform.position,transform.forward));else trigger.OnTrigger();
 				}
 			}
 		}

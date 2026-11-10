@@ -15,7 +15,25 @@ public static class ArChecks {
   }finally{UnityEngine.Object.DestroyImmediate(view);}
   Debug.Log("ARWORKSPACE TEST PASS: tracking readiness and translated/rotated panel placement");
  }
+ static void CheckPointerAndRecovery(){
+  var method=typeof(BrowserSurface).GetMethod("TryMapRay");
+  if(method==null)throw new Exception("Browser cannot preserve which pointer triggered it");
+  var go=GameObject.CreatePrimitive(PrimitiveType.Quad);
+  try{
+   go.transform.position=new Vector3(0,0,2);var surface=go.AddComponent<BrowserSurface>();Physics.SyncTransforms();
+   foreach(float x in new[]{-.25f,.25f}){object[] args={new Ray(new Vector3(x,0,0),Vector3.forward),1280,600,0,0};
+    if(!(bool)method.Invoke(surface,args)||Math.Abs((int)args[3]-(x<0?320:960))>1||Math.Abs((int)args[4]-300)>1)throw new Exception("Pointer source did not reach its own web coordinate");}
+  }finally{UnityEngine.Object.DestroyImmediate(go);}
+  var recover=typeof(WorkspacePlacement).GetMethod("NeedsRecovery");
+  if(recover==null)throw new Exception("Panel can remain outside field of view after tracking moves");
+  var view=new GameObject("recovery-test");
+  try{
+   if((bool)recover.Invoke(null,new object[]{view.transform,new Vector3(0,0,2.5f)})||!(bool)recover.Invoke(null,new object[]{view.transform,new Vector3(0,0,-2.5f)})||!(bool)recover.Invoke(null,new object[]{view.transform,new Vector3(0,0,20)}))throw new Exception("Off-screen/drift recovery gate is incorrect");
+  }finally{UnityEngine.Object.DestroyImmediate(view);}
+  Debug.Log("ARWORKSPACE TEST PASS: distinct gaze/hand coordinates and out-of-view recovery");
+ }
  public static void Run(){
+  CheckPointerAndRecovery();
   CheckPlacement();
   string captured="";Application.LogCallback handler=(message,trace,type)=>{captured+=message;};Application.logMessageReceived+=handler;
   var go=new GameObject("SECRET_CANARY_sk_test_123");

@@ -11,5 +11,6 @@
 <application>
 <activity android:name="com.unity3d.player.RealmaxActivity" android:screenOrientation="landscape" android:exported="true" android:launchMode="singleTask" android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale">
 <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+<intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.HOME"/><category android:name="android.intent.category.DEFAULT"/></intent-filter>
 <meta-data android:name="unityplayer.UnityActivity" android:value="true"/>
 </activity></application></manifest>

@@ -12,12 +12,13 @@ public static class ArBuild {
   var localMaven=Path.GetFullPath(Path.Combine(Application.dataPath,"../.dependencies/maven")).Replace('\\','/');
   var gradleTemplate=File.ReadAllText(Path.Combine(EditorApplication.applicationContentsPath,"PlaybackEngines/AndroidPlayer/Tools/GradleTemplates/settingsTemplate.gradle"));
   gradleTemplate=gradleTemplate.Replace("        google()","        maven { url uri('"+localMaven+"') }\n        maven { url 'https://maven.mozilla.org/maven2/' }\n        google()");
+  if(Environment.GetEnvironmentVariable("AR_WORKSPACE_OFFLINE")=="1")gradleTemplate+="\ngradle.startParameter.offline = true\n";
   File.WriteAllText("Assets/Plugins/Android/settingsTemplate.gradle",gradleTemplate);
 
   EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android);
   PlayerSettings.companyName="ARWorkspace";PlayerSettings.productName="REALMAX Workspace";
   PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android,"com.ar.realmaxworkspace");
-  PlayerSettings.bundleVersion="0.1.3";PlayerSettings.Android.bundleVersionCode=4;
+  PlayerSettings.bundleVersion="0.1.4";PlayerSettings.Android.bundleVersionCode=5;
   PlayerSettings.Android.minSdkVersion=(AndroidSdkVersions)25;PlayerSettings.Android.targetSdkVersion=(AndroidSdkVersions)35;
   PlayerSettings.Android.targetArchitectures=AndroidArchitecture.ARMv7;
   PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Android,ScriptingImplementation.Mono2x);
@@ -32,7 +33,7 @@ public static class ArBuild {
   if(!prefab)throw new Exception("Factory stereo camera prefab missing");
   var rig=(GameObject)PrefabUtility.InstantiatePrefab(prefab);var m=rig.GetComponentInChildren<SvrManager>();
   if(!m||!m.leftCamera||!m.rightCamera)throw new Exception("Both factory eye cameras are required");
-  m.settings.trackPosition=true;m.settings.poseStatusFade=false;m.settings.displayType=SvrManager.SvrSettings.eEyeBufferType.StereoSeperate;
+  m.settings.trackPosition=false;m.settings.poseStatusFade=false;m.settings.displayType=SvrManager.SvrSettings.eEyeBufferType.StereoSeperate;
   m.leftCamera.cullingMask=~0;m.rightCamera.cullingMask=~0;
   m.leftCamera.clearFlags=CameraClearFlags.SolidColor;m.rightCamera.clearFlags=CameraClearFlags.SolidColor;m.leftCamera.backgroundColor=Color.black;m.rightCamera.backgroundColor=Color.black;
   new GameObject("WorkspaceApp").AddComponent<ArWorkspace>();
