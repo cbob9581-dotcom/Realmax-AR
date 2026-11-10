@@ -16,6 +16,9 @@ import org.mozilla.geckoview.GeckoSessionSettings;
 import org.mozilla.geckoview.GeckoDisplay;
 public class SpatialBrowser {
  private static GeckoRuntime runtime;
+ private static final java.util.Set<SpatialBrowser> instances=java.util.Collections.synchronizedSet(new java.util.HashSet<SpatialBrowser>());
+ private MediaSession mediaSession;
+ public static void refreshAllAudio(){SpatialBrowser[] snapshot; synchronized(instances){snapshot=instances.toArray(new SpatialBrowser[0]);}for(SpatialBrowser browser:snapshot)browser.activity.runOnUiThread(()->{if(browser.mediaSession!=null&&!browser.closed)browser.mediaSession.muteAudio(DeviceInfo.isOutputMuted(browser.activity));});}
  private final Activity activity;
  private GeckoSession session;
  private GeckoDisplay display;
@@ -27,15 +30,15 @@ public class SpatialBrowser {
  private volatile boolean closed;
  private long lastFrame,downTime;
  private final int width,height;
- public SpatialBrowser(Activity a,int w,int h){activity=a;width=w;height=h;activity.runOnUiThread(this::start);}
+ public SpatialBrowser(Activity a,int w,int h){activity=a;width=w;height=h;instances.add(this);activity.runOnUiThread(this::start);}
  private void start(){try{
 
   android.system.Os.setenv("MOZ_DISABLE_SIG_HANDLER","1",true);
   if(runtime==null)runtime=GeckoRuntime.create(activity.getApplicationContext(),new org.mozilla.geckoview.GeckoRuntimeSettings.Builder().displayDensityOverride(1.0f).build());
   session=new GeckoSession(new GeckoSessionSettings.Builder().usePrivateMode(false).userAgentMode(GeckoSessionSettings.USER_AGENT_MODE_DESKTOP).viewportMode(GeckoSessionSettings.VIEWPORT_MODE_DESKTOP).suspendMediaWhenInactive(true).build());
   session.setMediaSessionDelegate(new MediaSession.Delegate(){
-   @Override public void onActivated(GeckoSession s,MediaSession media){media.muteAudio(true);}
-   @Override public void onPlay(GeckoSession s,MediaSession media){media.muteAudio(true);}
+   @Override public void onActivated(GeckoSession s,MediaSession media){mediaSession=media;media.muteAudio(DeviceInfo.isOutputMuted(activity));}
+   @Override public void onPlay(GeckoSession s,MediaSession media){mediaSession=media;media.muteAudio(DeviceInfo.isOutputMuted(activity));}
   });
   session.setNavigationDelegate(new GeckoSession.NavigationDelegate(){
    @Override public org.mozilla.geckoview.GeckoResult<GeckoSession> onNewSession(GeckoSession s,String uri){
@@ -81,5 +84,5 @@ public class SpatialBrowser {
  public void scroll(int direction){activity.runOnUiThread(()->{if(session==null)return;long t=SystemClock.uptimeMillis();float x=width/2f,y=height*.6f;touch(t,t,MotionEvent.ACTION_DOWN,x,y);for(int i=1;i<=6;i++)touch(t,t+i*20,MotionEvent.ACTION_MOVE,x,y+direction*i*height*.05f);touch(t,t+140,MotionEvent.ACTION_UP,x,y+direction*height*.3f);});}
  private void touch(long down,long when,int action,float x,float y){MotionEvent e=MotionEvent.obtain(down,when,action,x,y,0);session.getPanZoomController().onTouchEvent(e);e.recycle();}
  public void setActive(boolean active){activity.runOnUiThread(()->{if(session!=null)session.setActive(active);});}
- public void close(){closed=true;activity.runOnUiThread(()->{if(display!=null){display.surfaceDestroyed();session.releaseDisplay(display);display=null;}if(session!=null){session.close();session=null;}if(reader!=null){reader.close();reader=null;}if(frames!=null){frames.quitSafely();frames=null;}synchronized(lock){latest=null;}});}
+ public void close(){instances.remove(this);mediaSession=null;closed=true;activity.runOnUiThread(()->{if(display!=null){display.surfaceDestroyed();session.releaseDisplay(display);display=null;}if(session!=null){session.close();session=null;}if(reader!=null){reader.close();reader=null;}if(frames!=null){frames.quitSafely();frames=null;}synchronized(lock){latest=null;}});}
 }

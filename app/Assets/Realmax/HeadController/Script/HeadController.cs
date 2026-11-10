@@ -1,6 +1,7 @@
 using UnityEngine;
 namespace Realmax {
  public class HeadController : MonoBehaviour {
+  public static bool DiagnosticHold;
   public Transform EndPoint;public ReticleAnimation ReticleAnimation;
   readonly GazeDwellState dwell=new GazeDwellState();GameObject current;float initial=2.5f;
   public float DwellProgress{get{return dwell.Progress;}}
@@ -18,7 +19,7 @@ namespace Realmax {
    if(ReticleAnimation){if(current)ReticleAnimation.OpenRotateAnimation();else ReticleAnimation.CloseRotateAnimation();}
    if(target!=null)target.OnPress();
    bool click=dwell.Step(current?current.GetInstanceID():0,ray.direction,Time.unscaledDeltaTime);
-   if((click||Input.GetKeyDown((KeyCode)10))&&target!=null){var spatial=target as ISpatialPointerTarget;if(spatial!=null)spatial.TriggerFrom(ray);else target.OnTrigger();}
+   if(!DiagnosticHold&&(click||Input.GetKeyDown((KeyCode)10))&&target!=null){var spatial=target as ISpatialPointerTarget;if(spatial!=null)spatial.TriggerFrom(ray);else target.OnTrigger();}
   }
  }
 }

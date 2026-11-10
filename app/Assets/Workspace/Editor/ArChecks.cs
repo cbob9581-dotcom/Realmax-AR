@@ -53,7 +53,15 @@ public static class ArChecks {
   var layout=typeof(ArWorkspace).Assembly.GetType("SpatialKeyboardLayout");if(layout==null)throw new Exception("Manual Wi-Fi keyboard lacks full password symbols");var chars=new System.Collections.Generic.HashSet<char>();chars.Add(' ');foreach(bool symbols in new[]{false,true})foreach(string row in (string[])layout.GetMethod("Rows").Invoke(null,new object[]{symbols}))foreach(char c in row){chars.Add(c);chars.Add(char.ToUpperInvariant(c));}for(int i=32;i<=126;i++)if(!chars.Contains((char)i))throw new Exception("Manual password keyboard cannot enter ASCII "+i);
   Debug.Log("ARWORKSPACE TEST PASS: manual navigation invalidates plans and password symbols are complete");
  }
+ static void CheckTransparentModal(){
+  var root=new GameObject("modal-validation",typeof(RectTransform));var page=new GameObject("underlying-page",typeof(RectTransform),typeof(CanvasGroup));page.transform.SetParent(root.transform,false);page.GetComponent<CanvasGroup>().alpha=.7f;
+  var header=new GameObject("Persistent navigation and real telemetry",typeof(RectTransform));header.transform.SetParent(root.transform,false);var veil=new HudModalVeil();
+  try{veil.HideOthers(root.transform);if(page.GetComponent<CanvasGroup>().alpha!=0||!header.activeSelf)throw new Exception("Transparent keyboard did not isolate underlying content");page.SetActive(false);veil.Restore();if(page.activeSelf||Math.Abs(page.GetComponent<CanvasGroup>().alpha-.7f)>.001f)throw new Exception("Closing keyboard resurrected a hidden page");}
+  finally{veil.Restore();UnityEngine.Object.DestroyImmediate(root);}
+  Debug.Log("ARWORKSPACE TEST PASS: transparent keyboard hides only drawing and never resurrects pages");
+ }
  public static void Run(){
+  CheckTransparentModal();
   CheckReviewRegressions();
   CheckDwell();
   CheckPointerAndRecovery();
