@@ -10,5 +10,5 @@ Files: HudGlow.cs/HudGraphic.cs for visual geometry; WorkspaceNavigation.cs and 
 - [x] Add persistent exits and controller/system Back, cancel stale requests and close keyboards before leaving parent page.
 - [x] Independent final review and Android compile checks; native packaging and device harness continue below.
 - [x] Build/backup/install; real headset route diagnostics and both-eye inspection PASS; HOME and silence verified.
-- [ ] Upload final source/APK backup.
+- [x] Upload final source/APK backup: v0.3.0-rc1.
 Limits: other Android apps/system settings retain their native UI; website content retains site rendering. The reference is styling inspiration, not camera imagery or a background asset.
