@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class AiSpatialPanel : MonoBehaviour {
  Transform root;Font font;CloudAiClient client;Text input,output,providerLabel;string question="",field="question",reply="Configure a cloud provider, then enter a question.";bool caps;int page;
- public void Open(Transform parent,Font f){if(root){root.gameObject.SetActive(true);return;}font=f;root=new GameObject("AiSpatialPanel",typeof(RectTransform)).transform;root.SetParent(parent,false);root.localPosition=new Vector3(0,0,-3);client=gameObject.AddComponent<CloudAiClient>();client.Output+=OnOutput;
+ public void Open(Transform parent,Font f){if(root){client.Load();root.gameObject.SetActive(true);Refresh();return;}font=f;root=new GameObject("AiSpatialPanel",typeof(RectTransform)).transform;root.SetParent(parent,false);root.localPosition=new Vector3(0,0,-3);client=gameObject.AddComponent<CloudAiClient>();client.Output+=OnOutput;
   Label("AI SETTINGS / QUESTION",new Vector2(0,350),new Vector2(1200,55),26);
   Key("Endpoint",new Vector2(-470,295),new Vector2(280,55),()=>Select("endpoint"));Key("Model",new Vector2(-155,295),new Vector2(280,55),()=>Select("model"));Key("API key",new Vector2(155,295),new Vector2(280,55),()=>Select("key"));Key("Question",new Vector2(470,295),new Vector2(280,55),()=>Select("question"));
   input=Label("",new Vector2(0,225),new Vector2(1240,90),24);output=Label(reply,new Vector2(0,120),new Vector2(1240,120),23);

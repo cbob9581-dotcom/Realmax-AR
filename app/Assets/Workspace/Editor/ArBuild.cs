@@ -9,6 +9,7 @@ public static class ArBuild {
  [MenuItem("REALMAX/Build Workspace APK")]
  public static void Build(){
   ArChecks.Run();
+  var voiceScript=Path.GetFullPath(Path.Combine(Application.dataPath,"../../tools/prepare-voice.ps1"));var prepare=new System.Diagnostics.ProcessStartInfo("C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe","-NoProfile -ExecutionPolicy Bypass -File "+(char)34+voiceScript+(char)34);prepare.UseShellExecute=false;prepare.CreateNoWindow=true;prepare.WindowStyle=System.Diagnostics.ProcessWindowStyle.Hidden;using(var process=System.Diagnostics.Process.Start(prepare)){process.WaitForExit();if(process.ExitCode!=0)throw new Exception("Voice model preparation failed");}
   var localMaven=Path.GetFullPath(Path.Combine(Application.dataPath,"../.dependencies/maven")).Replace('\\','/');
   var gradleTemplate=File.ReadAllText(Path.Combine(EditorApplication.applicationContentsPath,"PlaybackEngines/AndroidPlayer/Tools/GradleTemplates/settingsTemplate.gradle"));
   gradleTemplate=gradleTemplate.Replace("        google()","        maven { url uri('"+localMaven+"') }\n        maven { url 'https://maven.mozilla.org/maven2/' }\n        google()");
@@ -18,7 +19,7 @@ public static class ArBuild {
   EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android,BuildTarget.Android);
   PlayerSettings.companyName="ARWorkspace";PlayerSettings.productName="REALMAX Workspace";
   PlayerSettings.SetApplicationIdentifier(BuildTargetGroup.Android,"com.ar.realmaxworkspace");
-  PlayerSettings.bundleVersion="0.1.4";PlayerSettings.Android.bundleVersionCode=6;
+  PlayerSettings.bundleVersion="0.2.0";PlayerSettings.Android.bundleVersionCode=14;
   PlayerSettings.Android.minSdkVersion=(AndroidSdkVersions)25;PlayerSettings.Android.targetSdkVersion=(AndroidSdkVersions)35;
   PlayerSettings.Android.targetArchitectures=AndroidArchitecture.ARMv7;
   PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Android,ScriptingImplementation.Mono2x);
@@ -28,6 +29,7 @@ public static class ArBuild {
   var p=typeof(PlayerSettings.Android).GetProperty("applicationEntry");if(p!=null)p.SetValue(null,Enum.Parse(p.PropertyType,"Activity"));
   var so=new SerializedObject(AssetDatabase.LoadAllAssetsAtPath("ProjectSettings/ProjectSettings.asset")[0]);var input=so.FindProperty("activeInputHandler");if(input!=null){input.intValue=0;so.ApplyModifiedPropertiesWithoutUndo();}
   if(!AssetDatabase.LoadAssetAtPath<Material>("Assets/Workspace/Resources/BrowserSurface.mat")){Directory.CreateDirectory("Assets/Workspace/Resources");AssetDatabase.CreateAsset(new Material(Shader.Find("Unlit/Texture")),"Assets/Workspace/Resources/BrowserSurface.mat");}
+  if(!AssetDatabase.LoadAssetAtPath<Material>("Assets/Workspace/Resources/ContrastReticle.mat"))AssetDatabase.CreateAsset(new Material(Shader.Find("Workspace/ContrastReticle")),"Assets/Workspace/Resources/ContrastReticle.mat");
   var scene=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
   var prefab=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Realmax/Prefab/SvrCamera.prefab");
   if(!prefab)throw new Exception("Factory stereo camera prefab missing");
@@ -36,6 +38,8 @@ public static class ArBuild {
   m.settings.trackPosition=false;m.settings.poseStatusFade=false;m.settings.displayType=SvrManager.SvrSettings.eEyeBufferType.StereoSeperate;
   m.leftCamera.cullingMask=~0;m.rightCamera.cullingMask=~0;
   m.leftCamera.clearFlags=CameraClearFlags.SolidColor;m.rightCamera.clearFlags=CameraClearFlags.SolidColor;m.leftCamera.backgroundColor=Color.black;m.rightCamera.backgroundColor=Color.black;
+  foreach(var h in rig.GetComponentsInChildren<Realmax.HeadController>())h.gameObject.AddComponent<ContrastPointer>();
+  foreach(var h in rig.GetComponentsInChildren<Realmax.ControllerRay>())h.gameObject.AddComponent<ContrastPointer>();
   new GameObject("WorkspaceApp").AddComponent<ArWorkspace>();
   Directory.CreateDirectory("Assets/Workspace/Scenes");var path="Assets/Workspace/Scenes/Workspace.unity";EditorSceneManager.SaveScene(scene,path);AssetDatabase.SaveAssets();
   Directory.CreateDirectory("Builds");var report=BuildPipeline.BuildPlayer(new[]{path},"Builds/RealmaxWorkspace.apk",BuildTarget.Android,BuildOptions.None);

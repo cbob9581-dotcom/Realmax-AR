@@ -40,6 +40,7 @@ public class RealmaxActivity extends Activity implements IUnityPlayerLifecycleEv
         mUnityPlayer = unityPlayer;
         setContentView(unityPlayer.getFrameLayout());
         unityPlayer.getFrameLayout().requestFocus();
+        com.ar.workspace.SettingsProvisioner.handleIntent(this,getIntent());
     }
 
     @Override
@@ -63,6 +64,7 @@ public class RealmaxActivity extends Activity implements IUnityPlayerLifecycleEv
         // to get the intent set on launch. To update that after launch we have to manually
         // replace the intent with the one caught here.
         setIntent(intent);
+        com.ar.workspace.SettingsProvisioner.handleIntent(this,intent);
         unityPlayer.newIntent(intent);
     }
 
@@ -93,6 +95,7 @@ public class RealmaxActivity extends Activity implements IUnityPlayerLifecycleEv
     @Override protected void onPause()
     {
         super.onPause();
+        com.ar.workspace.JarvisVoiceBridge.setWorkspaceVisible(false);
         unityPlayer.onPause();
     }
 
@@ -101,6 +104,7 @@ public class RealmaxActivity extends Activity implements IUnityPlayerLifecycleEv
     {
         super.onResume();
         unityPlayer.onResume();
+        com.ar.workspace.JarvisVoiceBridge.setWorkspaceVisible(true);
     }
 
     // Low Memory Unity

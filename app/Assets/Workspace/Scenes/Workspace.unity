@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1368591747
+--- !u!1 &654329308
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,8 +127,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1368591749}
-  - component: {fileID: 1368591748}
+  - component: {fileID: 654329310}
+  - component: {fileID: 654329309}
   m_Layer: 0
   m_Name: WorkspaceApp
   m_TagString: Untagged
@@ -136,25 +136,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1368591748
+--- !u!114 &654329309
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1368591747}
+  m_GameObject: {fileID: 654329308}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ee142c3e506e8142b5d5bc3cd34ac43, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ArWorkspace
---- !u!4 &1368591749
+--- !u!4 &654329310
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1368591747}
+  m_GameObject: {fileID: 654329308}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -163,7 +163,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1518047747
+--- !u!1001 &1393747734
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -230,11 +230,51 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1519538387808596, guid: 175957b4fb115174abf3f35c1947d710, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1393747737}
+    - targetCorrespondingSourceObject: {fileID: 1989047930736436, guid: 175957b4fb115174abf3f35c1947d710, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1393747738}
   m_SourcePrefab: {fileID: 100100000, guid: 175957b4fb115174abf3f35c1947d710, type: 3}
+--- !u!1 &1393747735 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1519538387808596, guid: 175957b4fb115174abf3f35c1947d710, type: 3}
+  m_PrefabInstance: {fileID: 1393747734}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1393747736 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1989047930736436, guid: 175957b4fb115174abf3f35c1947d710, type: 3}
+  m_PrefabInstance: {fileID: 1393747734}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1393747737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393747735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365c98c61589dcf4e85554a6a81ef3bf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ContrastPointer
+--- !u!114 &1393747738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1393747736}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 365c98c61589dcf4e85554a6a81ef3bf, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::ContrastPointer
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 1518047747}
-  - {fileID: 1368591749}
+  - {fileID: 1393747734}
+  - {fileID: 654329310}

@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Realmax;
 public class ArWorkspace : MonoBehaviour {
+ System.Collections.Generic.List<GameObject> chrome=new System.Collections.Generic.List<GameObject>();
  float recoveryTime; string deviceStatus="Checking network and battery..."; Coroutine recenterRoutine; Text status,body; Transform panel; Font font; int count; float nextLog; SpatialBrowserView browser; AiSpatialPanel ai; WebInputPanel webInput;
  IEnumerator Start(){
   Application.targetFrameRate=60;AudioListener.volume=0;
@@ -15,8 +16,8 @@ public class ArWorkspace : MonoBehaviour {
   Label("REALMAX WORKSPACE",new Vector2(-130,490),new Vector2(1000,80),42);
   var recenter=Box("Recenter",new Vector2(530,490),new Vector2(270,80),new Color(.08f,.17f,.27f,.95f));var rc=recenter.gameObject.AddComponent<BoxCollider>();rc.size=new Vector3(270,80,10);var ra=recenter.gameObject.AddComponent<SpatialAction>();ra.image=recenter;ra.action=QueueRecenter;Label("回正",new Vector2(530,490),new Vector2(260,75),28);
   status=Label("Starting stereo runtime...",new Vector2(0,420),new Vector2(1300,80),27);
-  body=Label("用手柄射线指向按钮，再按触摸板。\n也可用头部准星停留 4 秒选择。\n手柄菜单键：把面板召回眼前。",new Vector2(0,75),new Vector2(1250,270),34);
-  Button("主页",new Vector2(-420,-350),()=>{count++;if(browser)browser.Hide();if(ai)ai.Hide();if(webInput)webInput.Hide();body.gameObject.SetActive(true);body.text="REALMAX 双目工作台\n浏览器与 AI 在眼镜本机运行。\n已触发操作次数："+count;});
+  body=Label("用手柄射线指向按钮，再按触摸板。\n也可用头部准星停留约 1.5 秒选择。\n手柄菜单键：把面板召回眼前。",new Vector2(0,75),new Vector2(1250,270),34);
+  Button("贾维斯",new Vector2(-420,-350),()=>{var agent=GetComponent<JarvisAgent>();if(agent)agent.ShowHome();});
   Button("浏览器",new Vector2(0,-350),()=>ShowBrowser());
   Button("AI 问答",new Vector2(420,-350),()=>ShowAi());
   Button("键盘 / 回正",new Vector2(0,-490),()=>{if(browser&&browser.IsVisible&&!(ai&&ai.IsVisible)){if(!webInput)webInput=gameObject.AddComponent<WebInputPanel>();webInput.Open(panel,font,browser);}else Reposition();});
@@ -24,16 +25,26 @@ public class ArWorkspace : MonoBehaviour {
   Button("向下滚动",new Vector2(420,-490),()=>{if(ai&&ai.IsVisible)ai.Scroll(-1);else if(browser)browser.Scroll(-1);});
   ControllerKeyEvent.MenuKeyDown.AddListener(QueueRecenter);
   ControllerKeyEvent.ReturnKeyDown.AddListener(QueueRecenter);
+  foreach(Transform child in panel)chrome.Add(child.gameObject);
+  var jarvis=gameObject.AddComponent<JarvisAgent>();jarvis.Configure(this);
   yield return PlaceWhenTracked();
   Canvas.ForceUpdateCanvases();
   Debug.Log("ARWORKSPACE ready; independent stereo app; speaker muted");
 #if UNITY_ANDROID && !UNITY_EDITOR
   using(var player=new AndroidJavaClass("com.unity3d.player.UnityPlayer"))using(var activity=player.GetStatic<AndroidJavaObject>("currentActivity"))using(var intent=activity.Call<AndroidJavaObject>("getIntent")){
-   if(intent.Call<string>("getStringExtra","startPage")!="home")ShowBrowser();
+   if(intent.Call<string>("getStringExtra","startPage")=="browser")ShowBrowser();else jarvis.ShowHome();
    if(intent.Call<bool>("getBooleanExtra","diagnostics",false))StartCoroutine(CaptureEyes());
   }
 #endif
  }
+ public Transform Panel{get{return panel;}}
+ public Font WorkspaceFont{get{return font;}}
+ public void SetImmersiveAnswer(bool answer){foreach(var item in chrome)if(item)item.SetActive(!answer);}
+ public void HideContent(){SetImmersiveAnswer(false);if(webInput)webInput.Hide();if(browser)browser.Hide();if(ai)ai.Hide();if(body)body.gameObject.SetActive(false);var agent=GetComponent<JarvisAgent>();if(agent){agent.InvalidatePlan();agent.HidePanel();}}
+ public void OpenBrowser(){ShowBrowser();}
+ public void OpenAiSettings(){ShowAi();}
+ public void RecenterNow(){QueueRecenter();}
+ public void CaptureDiagnostics(){StartCoroutine(CaptureEyes());}
  IEnumerator CaptureEyes(){
   yield return new WaitForSecondsRealtime(12);
   yield return new WaitForEndOfFrame();
@@ -49,8 +60,8 @@ public class ArWorkspace : MonoBehaviour {
   finally{RenderTexture.active=previous;if(image)Destroy(image);}
  }
 
- void ShowBrowser(){if(webInput)webInput.Hide();if(ai)ai.Hide();body.gameObject.SetActive(false);if(!browser)browser=gameObject.AddComponent<SpatialBrowserView>();browser.Open(panel);}
- void ShowAi(){if(webInput)webInput.Hide();if(browser)browser.Hide();body.gameObject.SetActive(false);if(!ai)ai=gameObject.AddComponent<AiSpatialPanel>();ai.Open(panel,font);}
+ void ShowBrowser(){HideContent();if(!browser)browser=gameObject.AddComponent<SpatialBrowserView>();browser.Open(panel);}
+ void ShowAi(){HideContent();if(!ai)ai=gameObject.AddComponent<AiSpatialPanel>();ai.Open(panel,font);}
  void Reposition(){QueueRecenter();}
  void QueueRecenter(){if(!panel)return;if(recenterRoutine!=null)StopCoroutine(recenterRoutine);recenterRoutine=StartCoroutine(PlaceWhenTracked());}
  IEnumerator PlaceWhenTracked(){

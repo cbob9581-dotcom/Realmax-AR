@@ -32,7 +32,30 @@ public static class ArChecks {
   }finally{UnityEngine.Object.DestroyImmediate(view);}
   Debug.Log("ARWORKSPACE TEST PASS: distinct gaze/hand coordinates and out-of-view recovery");
  }
+ static void CheckDwell(){
+  var t=typeof(ArWorkspace).Assembly.GetType("GazeDwellState");if(t==null)throw new Exception("Gaze repeats clicks instead of one-shot dwell");
+  var state=Activator.CreateInstance(t);var step=t.GetMethod("Step");int fired=0;
+  for(int i=0;i<50;i++)if((bool)step.Invoke(state,new object[]{7,Vector3.forward,.1f}))fired++;
+  if(fired!=1)throw new Exception("Stable gaze must fire once, not repeatedly");
+  if((bool)step.Invoke(state,new object[]{8,Vector3.forward,.1f}))throw new Exception("New target inherited dwell time");
+  for(int i=0;i<20;i++)if((bool)step.Invoke(state,new object[]{8,Vector3.forward,.1f}))fired++;
+  if(fired!=1)throw new Exception("A refreshed screen re-clicked under a stationary gaze");
+  var moved=Quaternion.Euler(0,8,0)*Vector3.forward;
+  for(int i=0;i<20;i++)if((bool)step.Invoke(state,new object[]{8,moved,.1f}))fired++;
+  if(fired!=2)throw new Exception("Moving gaze did not re-arm selection");
+  step.Invoke(state,new object[]{0,Vector3.forward,.1f});
+  if((bool)step.Invoke(state,new object[]{8,Vector3.forward,.1f}))throw new Exception("Lost target retained dwell");
+  Debug.Log("ARWORKSPACE TEST PASS: stable gaze is one-shot and target loss resets timing");
+ }
+ static void CheckReviewRegressions(){
+  var go=new GameObject("navigation-test");
+  try{var workspace=go.AddComponent<ArWorkspace>();var agent=go.AddComponent<JarvisAgent>();var field=typeof(JarvisAgent).GetField("generation",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance);field.SetValue(agent,7);workspace.HideContent();if((int)field.GetValue(agent)==7)throw new Exception("Manual navigation can still execute stale cloud plans");}finally{UnityEngine.Object.DestroyImmediate(go);}
+  var layout=typeof(ArWorkspace).Assembly.GetType("SpatialKeyboardLayout");if(layout==null)throw new Exception("Manual Wi-Fi keyboard lacks full password symbols");var chars=new System.Collections.Generic.HashSet<char>();chars.Add(' ');foreach(bool symbols in new[]{false,true})foreach(string row in (string[])layout.GetMethod("Rows").Invoke(null,new object[]{symbols}))foreach(char c in row){chars.Add(c);chars.Add(char.ToUpperInvariant(c));}for(int i=32;i<=126;i++)if(!chars.Contains((char)i))throw new Exception("Manual password keyboard cannot enter ASCII "+i);
+  Debug.Log("ARWORKSPACE TEST PASS: manual navigation invalidates plans and password symbols are complete");
+ }
  public static void Run(){
+  CheckReviewRegressions();
+  CheckDwell();
   CheckPointerAndRecovery();
   CheckPlacement();
   string captured="";Application.LogCallback handler=(message,trace,type)=>{captured+=message;};Application.logMessageReceived+=handler;

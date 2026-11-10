@@ -25,3 +25,5 @@
 **/.utmp/
 **/.gradle/
 **/.cxx/
+/app/Assets/Plugins/Android/WorkspaceBrowser.androidlib/src/main/assets/vosk-cn/
+/.local/
